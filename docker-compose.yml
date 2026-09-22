@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  zookeeper:
+    image: bitnami/zookeeper:3.8
+    environment:
+      - ZOO_ENABLE_AUTH=no
+      - ZOO_CLIENT_PORT=2181
+    ports:
+      - "2181:2181"
+
+  kafka:
+    image: bitnami/kafka:3.6
+    depends_on:
+      - zookeeper
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  fastapi-local:
+    image: fastapi-ws:dev
+    build: .
+    environment:
+      - KAFKA_BOOTSTRAP=host.docker.internal:9092
+      - REDIS_ENDPOINT=host.docker.internal:6379
+    ports:
+      - "8000:80"

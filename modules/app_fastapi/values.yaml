@@ -1,0 +1,38 @@
+replicaCount: 3
+
+image:
+  repository: myrepo/fastapi-ws
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+env:
+  - name: KAFKA_BOOTSTRAP
+    value: "b-1.kafka:9092"
+  - name: KINESIS_STREAM
+    value: "telemetry-stream"
+  - name: REDIS_ENDPOINT
+    value: "redis.example.com"
+  - name: LOG_LEVEL
+    value: "INFO"
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 65
+
+websocket:
+  enabled: true
+  path: "/ws"
