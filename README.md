@@ -1,5 +1,7 @@
 # terraform-01
-a modular Terraform project layout that can be uses to provision the core platform for that Python/FastAPI + Kafka/Kinesis + ECS/EKS + WebSockets, sub‑100ms telemetry system.
+a scalable backend service for real‑time positioning or IoT data.
+
+This project is a modular Terraform project layout that can be uses to provision the core platform for that Python/FastAPI + Kafka/Kinesis + ECS/EKS + WebSockets, sub‑100ms telemetry system.
 
 ## 1. Repository Structure
 ```
